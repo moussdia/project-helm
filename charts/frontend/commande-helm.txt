@@ -1,0 +1,55 @@
+
+
+--------------mon chart helm---------------------
+
+.
+└── my-nginx
+    ├── Chart.yaml
+    ├── commande-helm.txt
+    ├── default.yaml
+    ├── production.yaml
+    ├── staging.yaml
+    └── templates
+        ├── deployment.yaml
+        └── service.yaml
+
+$ cat templates/deployment.yaml 
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+
+
+
+
+-----------------commande helm--------------------
+
+#pour install un chart
+$ helm install --name exo my-nginx(le_chart) -f default.yaml
+$ helm install --name exo my-nginx(le_chart) -f staging.yaml
+$ helm install --name exo my-nginx(le_chart) -f production.yaml
+
+#pour supprimer un chart
+$ helm delete exo my-nginx(le_chart)
+
+
+
+
